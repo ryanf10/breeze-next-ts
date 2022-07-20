@@ -7,9 +7,11 @@ import DropdownButton from '../DropdownButton'
 import { useState } from 'react'
 import ResponsiveNavLink from '../ResponsiveNavLink'
 import ResponsiveNavButton from '../ResponsiveNavButton'
+import { useAuth, User } from '../../hooks/auth'
 
-export default function Navigation() {
+export default function Navigation(user?: User) {
   const router = useRouter()
+  const { logout } = useAuth()
   const [open, setOpen] = useState(false)
   return (
     <nav className="bg-white border-b border-gray-100">
@@ -43,7 +45,7 @@ export default function Navigation() {
               width="48"
               trigger={
                 <button className="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none transition duration-150 ease-in-out">
-                  <div>{'DUMMY'}</div>
+                  <div>{user?.name}</div>
 
                   <div className="ml-1">
                     <svg
@@ -62,7 +64,7 @@ export default function Navigation() {
               }
             >
               {/* Authentication */}
-              <DropdownButton>Logout</DropdownButton>
+              <DropdownButton onClick={logout}>Logout</DropdownButton>
             </Dropdown>
           </div>
 
@@ -134,17 +136,17 @@ export default function Navigation() {
 
               <div className="ml-3">
                 <div className="font-medium text-base text-gray-800">
-                  {'DUMMY'}
+                  {user?.name}
                 </div>
                 <div className="font-medium text-sm text-gray-500">
-                  {'DUMMY EMAIL'}
+                  {user?.email}
                 </div>
               </div>
             </div>
 
             <div className="mt-3 space-y-1">
               {/* Authentication */}
-              <ResponsiveNavButton>Logout</ResponsiveNavButton>
+              <ResponsiveNavButton onClick={logout}>Logout</ResponsiveNavButton>
             </div>
           </div>
         </div>

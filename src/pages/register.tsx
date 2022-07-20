@@ -5,15 +5,33 @@ import AuthCard from '../components/AuthCard'
 import Link from 'next/link'
 import ApplicationLogo from '../components/ApplicationLogo'
 import AuthValidationErrors from '../components/AuthValidationErrors'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Label from '../components/Label'
+import { useAuth } from '../hooks/auth'
 
 export default function Register() {
+  const { register } = useAuth({
+    middleware: 'guest',
+    redirectIfAuthenticated: '/dashboard',
+  })
+
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirmation, setPasswordConfirmation] = useState('')
-  const [errors] = useState([])
+  const [errors, setErrors] = useState<string[]>([])
+
+  const submitForm = (event: React.SyntheticEvent) => {
+    event.preventDefault()
+
+    register({
+      name,
+      email,
+      password,
+      password_confirmation: passwordConfirmation,
+      setErrors,
+    })
+  }
 
   return (
     <GuestLayout>
@@ -29,7 +47,7 @@ export default function Register() {
         {/* Validation Errors */}
         <AuthValidationErrors className="mb-4" errors={errors} />
 
-        <form>
+        <form onSubmit={submitForm}>
           {/* Name */}
           <div>
             <Label htmlFor="name">Name</Label>

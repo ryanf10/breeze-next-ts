@@ -6,14 +6,26 @@ import AuthSessionStatus from '../components/AuthSessionStatus'
 import AuthValidationErrors from '../components/AuthValidationErrors'
 import Label from '../components/Label'
 import Input from '../components/Input'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Button from '../components/Button'
+import { useAuth } from '../hooks/auth'
 
 export default function Login() {
+  const { login } = useAuth({
+    middleware: 'guest',
+    redirectIfAuthenticated: '/dashboard',
+  })
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [errors] = useState([])
-  const [status] = useState(null)
+  const [errors, setErrors] = useState<string[]>([])
+  const [status, setStatus] = useState<string | null>(null)
+
+  const submitForm = async (event: React.SyntheticEvent) => {
+    event.preventDefault()
+
+    login({ email, password, setErrors, setStatus })
+  }
 
   return (
     <GuestLayout>
@@ -32,7 +44,7 @@ export default function Login() {
         {/* Validation Errors */}
         <AuthValidationErrors className="mb-4" errors={errors} />
 
-        <form>
+        <form onSubmit={submitForm}>
           {/* Email Address */}
           <div>
             <Label htmlFor="email">Email</Label>

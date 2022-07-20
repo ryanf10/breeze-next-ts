@@ -4,5 +4,5 @@ module.exports = {
     dirs: ['src'],
   },
   reactStrictMode: true,
-  swcMinify: true,
+  swcMinify: false,
 }
