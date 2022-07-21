@@ -1,34 +1,92 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Laravel Breeze - Next.js Edition 🏝️
 
-## Getting Started
+## Introduction
 
-First, run the development server:
+This repository is an implementing of the [Laravel Breeze](https://laravel.com/docs/starter-kits) application / authentication starter kit frontend in [Next.js](https://nextjs.org). All of the authentication boilerplate is already written for you - powered by [Laravel Sanctum](https://laravel.com/docs/sanctum), allowing you to quickly begin pairing your beautiful Next.js frontend with a powerful Laravel backend.
+**This repository is a refactor of [breeze-next](https://github.com/laravel/breeze-next) by changing programing language from [JavaScript](https://www.javascript.com/) to [TypeScript](https://www.typescriptlang.org/)**
+
+This repository consists of:
+
+- 🔼 Next.js 12
+- ⚛️ React 18
+- ✨ TypeScript
+- 📏 ESLint — Find and fix problems in your code
+- 💖 Prettier — Format your code consistently
+- 🐶 Husky & Lint Staged — Run scripts on your staged files before they are committed
+- 🔑 Authentication starter kit
+
+## Official Documentation
+
+### Installation
+
+First, create a Next.js compatible Laravel backend by installing Laravel Breeze into a [fresh Laravel application](https://laravel.com/docs/installation) and installing Breeze's API scaffolding:
 
 ```bash
-npm run dev
-# or
+# Create the Laravel application...
+laravel new next-backend
+
+cd next-backend
+
+# Install Breeze and dependencies...
+composer require laravel/breeze
+
+php artisan breeze:install api
+```
+
+Next, ensure that your application's `APP_URL` and `FRONTEND_URL` environment variables are set to `http://localhost:8000` and `http://localhost:3000`, respectively.
+
+After defining the appropriate environment variables, you may serve the Laravel application using the `serve` Artisan command:
+
+```bash
+# Serve the application...
+php artisan serve
+```
+
+Next, clone this repository and install its dependencies with `yarn install` or `npm install`. Then, copy the `.env.example` file to `.env.local` and supply the URL of your backend:
+
+```
+NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+```
+
+To enable husky, you have to run 
+```
+yarn husky install
+```
+
+Finally, run the application via `yarn dev` or `npm run dev`. The application will be available at `http://localhost:3000`:
+
+```
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> Note: Currently, we recommend using `localhost` during local development of your backend and frontend to avoid CORS "Same-Origin" issues.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Authentication Hook
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+This Next.js application contains a custom `useAuth` React hook, designed to abstract all authentication logic away from your pages. In addition, the hook can be used to access the currently authenticated user:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```js
+const ExamplePage = () => {
+  const { logout, user } = useAuth({ middleware: 'auth' })
 
-## Learn More
+  return (
+    <>
+      <p>{user?.name}</p>
 
-To learn more about Next.js, take a look at the following resources:
+      <button onClick={logout}>Sign out</button>
+    </>
+  )
+}
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+export default ExamplePage
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+> Note: You will need to use [optional chaining](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining) (`user?.name` instead of `user.name`) when accessing properties on the user object to account for Next.js's initial server-side render.
 
-## Deploy on Vercel
+### Named Routes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+For convenience, [Ziggy](https://github.com/tighten/ziggy#spas-or-separate-repos) may be used to reference your Laravel application's named route URLs from your React application.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## License
+
+Laravel Breeze Next is open-sourced software licensed under the [MIT license](LICENSE.md).
