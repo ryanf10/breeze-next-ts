@@ -33,7 +33,7 @@ export interface ResetPasswordProps {
 }
 
 export interface AuthParam {
-  middleware?: string
+  middleware?: 'guest' | 'auth'
   redirectIfAuthenticated?: string
 }
 export interface User {
