@@ -2,7 +2,7 @@ import Link, { LinkProps } from 'next/link'
 import { PropsWithChildren } from 'react'
 
 export interface Props extends LinkProps {
-  active: boolean
+  active?: boolean
 }
 
 export default function ResponsiveNavLink({
