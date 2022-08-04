@@ -48,7 +48,8 @@ Next, clone this repository and install its dependencies with `yarn install` or 
 NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
 ```
 
-To enable husky, you have to run 
+To enable husky, you have to run
+
 ```
 yarn husky install
 ```
